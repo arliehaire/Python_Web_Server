@@ -1,54 +1,86 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var pieCtx = document.getElementById('pieChart').getContext('2d');
-    var barCtx = document.getElementById('barChart').getContext('2d');
-    var histCtx = document.getElementById('histogramChart').getContext('2d');
-    var lineCtx = document.getElementById('lineChart').getContext('2d');
+    const cpuCtx = document.getElementById('cpuChart').getContext('2d');
+    const ramCtx = document.getElementById('ramChart').getContext('2d');
+    const diskCtx = document.getElementById('diskChart').getContext('2d');
+    const networkCtx = document.getElementById('networkChart').getContext('2d');
 
-    new Chart(pieCtx, {
-        type: 'pie',
+    new Chart(cpuCtx, {
+        type: 'bar',
         data: {
-            labels: ['Electronics', 'Clothing', 'Grocery', 'Home Decor'],
+            labels: cpuData.labels,
             datasets: [{
-                data: [30, 25, 20, 25],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50']
+                label: 'CPU Usage (%)',
+                data: cpuData.values,
+                backgroundColor: '#FF6384'
             }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, max: 100 }
+            }
         }
     });
 
-    new Chart(barCtx, {
+    new Chart(ramCtx, {
         type: 'bar',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            labels: ramData.labels,
             datasets: [{
-                label: 'Revenue ($)',
-                data: [5000, 7000, 8000, 6000, 9000],
+                label: 'RAM Usage (MiB)',
+                data: ramData.values,
                 backgroundColor: '#36A2EB'
             }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
     });
 
-    new Chart(histCtx, {
+    new Chart(diskCtx, {
         type: 'bar',
         data: {
-            labels: ['0-10', '10-20', '20-30', '30-40', '40+'],
-            datasets: [{
-                label: 'Orders',
-                data: [15, 25, 30, 20, 10],
-                backgroundColor: '#FFCE56'
-            }]
+            labels: diskData.labels,
+            datasets: [
+                {
+                    label: 'Reads (KiB/s)',
+                    data: diskData.reads,
+                    backgroundColor: '#FFCE56'
+                },
+                {
+                    label: 'Writes (KiB/s)',
+                    data: diskData.writes,
+                    backgroundColor: '#4BC0C0'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
     });
 
-    new Chart(lineCtx, {
-        type: 'line',
+    new Chart(networkCtx, {
+        type: 'bar',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            labels: networkData.labels,
             datasets: [{
-                label: 'Customers',
-                data: [100, 200, 300, 400, 500],
-                borderColor: '#FF6384',
-                fill: false
+                label: 'Network Usage (KiB/s)',
+                data: networkData.values,
+                backgroundColor: '#FFA726'
             }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
     });
 });
+

@@ -15,11 +15,19 @@ class User(db.Model, UserMixin):
     type = db.Column(db.String(50), nullable=False, default='User')  # 'Admin' or 'User'
 
 class MetricLogs(db.Model):
-    """Model to store metrics logged from machines via Netdata API."""
+    """Model to store detailed metrics per Netdata API and project spec."""
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now(), nullable=False)
-    machine_name = db.Column(db.String(45), nullable=False)
-    cpu_usage = db.Column(db.Float, nullable=True)
-    memory_usage = db.Column(db.Float, nullable=True)
-    disk_usage = db.Column(db.Float, nullable=True)
-    network_usage = db.Column(db.Float, nullable=True)
+    ip = db.Column(db.String(64), nullable=False)  # Formerly machine_name
+
+    cpu_user = db.Column(db.Float, nullable=True)
+    cpu_system = db.Column(db.Float, nullable=True)
+
+    ram_used = db.Column(db.Float, nullable=True)
+
+    disk_reads = db.Column(db.Float, nullable=True)
+    disk_writes = db.Column(db.Float, nullable=True)
+
+    net_in = db.Column(db.Float, nullable=True)
+    net_out = db.Column(db.Float, nullable=True)
+

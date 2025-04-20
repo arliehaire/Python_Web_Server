@@ -1,9 +1,7 @@
-"""
-Main application routes.
-"""
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required
 from .models import User, db
+from app.metrics_queries import get_latest_metrics
 
 main_bp = Blueprint('main', __name__)
 
@@ -15,8 +13,8 @@ def index():
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
-    """Render the dashboard page."""
-    return render_template('dashboard.html')
+    cpu, ram, disk, network = get_latest_metrics("172.104.30.248")
+    return render_template('dashboard.html', cpu=cpu, ram=ram, disk=disk, network=network)
 
 @main_bp.route('/unauthorized')
 def unauthorized():
@@ -41,3 +39,4 @@ def manage_users():
             flash('User updated successfully.', 'success')
     users = User.query.all()
     return render_template('manage_users.html', users=users)
+
